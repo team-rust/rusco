@@ -1,0 +1,8 @@
+[package]
+name = "rusco"
+version = "0.0.1"
+authors = ["Matthias Endler <matthias-endler@gmx.net>"]
+
+#toml = "0.1.18"
+[dependencies.toml]
+git = "https://github.com/mre/toml-rs.git"
