@@ -1,27 +1,34 @@
 extern crate rusco;
-extern crate "toml" as toml;
+extern crate toml;
+#[macro_use]
+extern crate log;
+extern crate env_logger;
 
 use std::io::prelude::*;
 use std::fs::File;
+use std::collections::BTreeMap;
 
-fn read_config() {
+fn read_config() -> BTreeMap<String, toml::Value> {
+    let mut file = File::open("Config.toml").unwrap();
 
-}
-
-fn main() {
-
-    let mut file = match File::open("Config.toml") {
-        Err(e) => panic!("Error while reading config file: {}", e),
-        Ok(file) => file
-    };
     let mut s = String::new();
     file.read_to_string(&mut s).unwrap();
 
     let mut parser = toml::Parser::new(&s);
-    match parser.parse() {
-        Some(value) => println!("found toml: {:?}", value),
-        None => {
-            println!("parse errors: {:?}", parser.errors);
-        }
+    //parser.parse().unwrap();
+    let config = match parser.parse() {
+        None => panic!("test"),
+        Some(config) => config,
+     };
+     config
+}
+
+fn main() {
+    env_logger::init().unwrap();
+    let config = read_config();
+    info!("Config parsed: {:?}", config);
+
+    for (k, v)  in config.iter() {
+        println!("{} {:?}", k, v);
     }
 }

@@ -1,2 +1,6 @@
 [cpu]
 foo = 123
+
+[disk]
+devices = "*"
+bla = "*"
